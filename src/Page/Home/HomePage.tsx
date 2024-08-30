@@ -9,6 +9,7 @@ import Testimonials from "../../components/Testimonial/Testimonials";
 
 
 
+
 const HomePage = () => {
     return (
         <div>
@@ -23,6 +24,7 @@ const HomePage = () => {
             </div>
             <SharedHero />
             <Testimonials />
+
         </div>
     );
 };

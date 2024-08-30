@@ -1,11 +1,13 @@
 
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { navLink } from '../../utils';
+import { FaUserTie } from 'react-icons/fa6';
+import { FaBell } from 'react-icons/fa';
 
 const NavBar = () => {
 
-
+    const user = true
 
 
     return (
@@ -31,7 +33,16 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className='flex-1 justify-end items-end pr-5'>
-                <button className='btn btn-circle swap swap-rotate shadow-md shadow-black/50'>Hi</button>
+                {user ? <>
+                    <Link to='/booking'>
+                        <button className='px-3'>
+                            <span className='absolute bg-blue-600 text-white rounded-full text-xs px-1'>5</span>
+                            <FaBell className='text-3xl' />
+                        </button>
+                    </Link>
+                    <Link to='/dashboard'><button className='btn btn-circle swap swap-rotate shadow-md shadow-black/50'><FaUserTie className='text-3xl' /></button></Link>
+                </> : <Link to='/login'><button className='btn  swap swap-rotate shadow-md shadow-black/50'>LogIn</button></Link>
+                }
             </div>
         </div>
     );

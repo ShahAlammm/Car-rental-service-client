@@ -6,12 +6,18 @@ import Contact from "../Page/Contact/Contact";
 import Login from "../Page/Login/Login";
 import SignIn from "../Page/SignIn/SignIn";
 import AllCars from "../Page/AllCars/AllCars";
+import Details from "../Page/Details/Details";
+import Booking from "../Page/Booking/Booking";
+import DashboardLayout from "../components/Layout/DashboardLayout";
+import Profile from "../Dashboard/Profile/Profile";
+import ErrorPage from "../Page/Error/Error";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",
@@ -29,6 +35,15 @@ const router = createBrowserRouter([
                 path: "allCars",
                 element: <AllCars />,
             },
+            {
+                path: "details",
+                element: <Details />,
+            },
+            {
+                path: "booking",
+                element: <Booking />,
+            }
+
         ],
     },
     {
@@ -38,6 +53,22 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <SignIn />,
+    },
+    {
+        path: "/dashboard",
+        element: <DashboardLayout />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "/dashboard",
+                element: <Profile />,
+            },
+            {
+                path: "booking",
+                element: <Booking />,
+            }
+
+        ],
     }
 ]);
 

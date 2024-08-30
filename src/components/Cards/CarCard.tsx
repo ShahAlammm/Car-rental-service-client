@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
 import carimg from '../../assets/car10.png';
+import { Link } from "react-router-dom";
 
 const CarCard = () => {
     return (
@@ -23,10 +24,12 @@ const CarCard = () => {
                 <CardFooter className="p-4 border-t border-blue-600">
                     <div className="indicator w-full">
                         {/* {item?.topSelling === true ? (<span className="indicator-item badge badge-primary">Top Sells</span>) : ""} */}
-                        <button className="btn bg-blue-500 w-full text-white hover:bg-blue-800" >
-                            {/* onClick={() => navigate(`/details/${item?._id}`)} */}
-                            View Details
-                        </button>
+                        <Link to="/details">
+                            <button className="btn bg-blue-500 w-full text-white hover:bg-blue-800" >
+                                {/* onClick={() => navigate(`/details/${item?._id}`)} */}
+                                View Details
+                            </button>
+                        </Link>
                     </div>
                 </CardFooter>
             </Card>

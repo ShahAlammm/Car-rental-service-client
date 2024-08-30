@@ -1,6 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+
+const Login: React.FC = () => {
+    const navigate = useNavigate()
+    const [formData, setFormData] = useState({
+
+        email: '',
+        password: '',
+    });
+    const [errors, setErrors] = useState<any>({});
 
 
-const Login = () => {
+    const validateForm = () => {
+        const newErrors: any = {};
+
+        if (!formData.email) newErrors.email = "Email is required.";
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email format is invalid.";
+
+        if (!formData.password) newErrors.password = "Password is required.";
+        return newErrors;
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value,
+        });
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const formErrors = validateForm();
+        if (Object.keys(formErrors).length === 0) {
+            // Simulate successful registration
+            toast.success("Log In successful!");
+            navigate('/login');
+        } else {
+            setErrors(formErrors);
+        }
+    };
+
     return (
         <div className="bg-white relative lg:py-20">
             <div className="flex flex-col items-center justify-between max-w-7xl mx-auto lg:flex-row xl:px-5 py-10">
@@ -10,7 +52,7 @@ const Login = () => {
                         <div className="flex flex-col items-center justify-center w-full h-full">
                             <img
                                 src="https://res.cloudinary.com/macxenon/image/upload/v1631570592/Run_-_Health_qcghbu.png"
-                                alt="Login Illustration"
+                                alt="Sign Up Illustration"
                                 className="btn-"
                             />
                         </div>
@@ -20,127 +62,59 @@ const Login = () => {
                     <div className="w-full mt-20 lg:mt-0 lg:w-5/12 relative z-10 max-w-2xl">
                         <div className="flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl">
                             <p className="w-full text-4xl font-medium text-center leading-snug font-serif">
-                                Sign up for an account
+                                Sign Up for an Account
                             </p>
 
                             {/* Form Fields */}
-                            <div className="w-full mt-6 space-y-8">
-                                <div className="relative">
-                                    <label
-                                        className="bg-white px-2 -mt-3 ml-2 font-medium text-gray-600 absolute"
-                                        htmlFor="username"
-                                    >
-                                        Username
-                                    </label>
-                                    <input
-                                        id="username"
-                                        placeholder="John"
-                                        type="text"
-                                        className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 px-4 mt-2 text-base bg-white border-gray-300 rounded-md"
-                                    />
-                                </div>
+                            <form className="w-full mt-6 space-y-8" onSubmit={handleSubmit}>
 
-                                <div className="relative">
-                                    <label
-                                        className="bg-white px-2 -mt-3 ml-2 font-medium text-gray-600 absolute"
-                                        htmlFor="email"
-                                    >
-                                        Email
+                                <div className="relative form-control">
+                                    <label className="bg-white px-2 -mt-3 ml-2 font-medium text-gray-600 absolute" htmlFor="email">
+                                        Email Address
                                     </label>
                                     <input
                                         id="email"
-                                        placeholder="123@ex.com"
+                                        name="email"
+                                        placeholder="example@domain.com"
                                         type="email"
                                         className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 px-4 mt-2 text-base bg-white border-gray-300 rounded-md"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
                                     />
+                                    {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                                 </div>
 
-                                <div className="relative">
-                                    <label
-                                        className="bg-white px-2 -mt-3 ml-2 font-medium text-gray-600 absolute"
-                                        htmlFor="password"
-                                    >
+                                <div className="relative form-control">
+                                    <label className="bg-white px-2 -mt-3 ml-2 font-medium text-gray-600 absolute" htmlFor="password">
                                         Password
                                     </label>
                                     <input
                                         id="password"
+                                        name="password"
                                         placeholder="Password"
                                         type="password"
                                         className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 px-4 mt-2 text-base bg-white border-gray-300 rounded-md"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
                                     />
+                                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                                 </div>
 
                                 {/* Submit Button */}
                                 <div className="relative">
                                     <button className="w-full py-4 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease">
-                                        Submit
+                                        Log In
                                     </button>
                                 </div>
-                            </div>
+                            </form>
+
+                            <h3 className="mt-5">
+                                Create an account?{" "}
+                                <Link to="/register" className="text-blue-500">
+                                    Sign In Instead
+                                </Link>
+                            </h3>
                         </div>
-
-                        {/* Decorative SVGs */}
-                        <svg viewBox="0 0 91 91" className="hidden lg:flex absolute top-0 left-0  w-32 h-32 -mt-12 -ml-12 text-yellow-300
-            fill-current -z-10"><g stroke="none" strokeWidth="1" fillRule="evenodd"><g fillRule="nonzero"><g><g><circle
-                                cx="3.261" cy="3.445" r="2.72" /><circle cx="15.296" cy="3.445" r="2.719" /><circle cx="27.333" cy="3.445"
-                                    r="2.72" /><circle cx="39.369" cy="3.445" r="2.72" /><circle cx="51.405" cy="3.445" r="2.72" /><circle cx="63.441"
-                                        cy="3.445" r="2.72" /><circle cx="75.479" cy="3.445" r="2.72" /><circle cx="87.514" cy="3.445" r="2.719" /></g><g
-                                            transform="translate(0 12)"><circle cx="3.261" cy="3.525" r="2.72" /><circle cx="15.296" cy="3.525"
-                                                r="2.719" /><circle cx="27.333" cy="3.525" r="2.72" /><circle cx="39.369" cy="3.525" r="2.72" /><circle
-                                        cx="51.405" cy="3.525" r="2.72" /><circle cx="63.441" cy="3.525" r="2.72" /><circle cx="75.479" cy="3.525"
-                                            r="2.72" /><circle cx="87.514" cy="3.525" r="2.719" /></g><g transform="translate(0 24)"><circle cx="3.261"
-                                                cy="3.605" r="2.72" /><circle cx="15.296" cy="3.605" r="2.719" /><circle cx="27.333" cy="3.605" r="2.72" /><circle
-                                        cx="39.369" cy="3.605" r="2.72" /><circle cx="51.405" cy="3.605" r="2.72" /><circle cx="63.441" cy="3.605"
-                                            r="2.72" /><circle cx="75.479" cy="3.605" r="2.72" /><circle cx="87.514" cy="3.605" r="2.719" /></g><g
-                                                transform="translate(0 36)"><circle cx="3.261" cy="3.686" r="2.72" /><circle cx="15.296" cy="3.686"
-                                                    r="2.719" /><circle cx="27.333" cy="3.686" r="2.72" /><circle cx="39.369" cy="3.686" r="2.72" /><circle
-                                        cx="51.405" cy="3.686" r="2.72" /><circle cx="63.441" cy="3.686" r="2.72" /><circle cx="75.479" cy="3.686"
-                                            r="2.72" /><circle cx="87.514" cy="3.686" r="2.719" /></g><g transform="translate(0 49)"><circle cx="3.261"
-                                                cy="2.767" r="2.72" /><circle cx="15.296" cy="2.767" r="2.719" /><circle cx="27.333" cy="2.767" r="2.72" /><circle
-                                        cx="39.369" cy="2.767" r="2.72" /><circle cx="51.405" cy="2.767" r="2.72" /><circle cx="63.441" cy="2.767"
-                                            r="2.72" /><circle cx="75.479" cy="2.767" r="2.72" /><circle cx="87.514" cy="2.767" r="2.719" /></g><g
-                                                transform="translate(0 61)"><circle cx="3.261" cy="2.846" r="2.72" /><circle cx="15.296" cy="2.846"
-                                                    r="2.719" /><circle cx="27.333" cy="2.846" r="2.72" /><circle cx="39.369" cy="2.846" r="2.72" /><circle
-                                        cx="51.405" cy="2.846" r="2.72" /><circle cx="63.441" cy="2.846" r="2.72" /><circle cx="75.479" cy="2.846"
-                                            r="2.72" /><circle cx="87.514" cy="2.846" r="2.719" /></g><g transform="translate(0 73)"><circle cx="3.261"
-                                                cy="2.926" r="2.72" /><circle cx="15.296" cy="2.926" r="2.719" /><circle cx="27.333" cy="2.926" r="2.72" /><circle
-                                        cx="39.369" cy="2.926" r="2.72" /><circle cx="51.405" cy="2.926" r="2.72" /><circle cx="63.441" cy="2.926"
-                                            r="2.72" /><circle cx="75.479" cy="2.926" r="2.72" /><circle cx="87.514" cy="2.926" r="2.719" /></g><g
-                                                transform="translate(0 85)"><circle cx="3.261" cy="3.006" r="2.72" /><circle cx="15.296" cy="3.006"
-                                                    r="2.719" /><circle cx="27.333" cy="3.006" r="2.72" /><circle cx="39.369" cy="3.006" r="2.72" /><circle
-                                        cx="51.405" cy="3.006" r="2.72" /><circle cx="63.441" cy="3.006" r="2.72" /><circle cx="75.479" cy="3.006"
-                                            r="2.72" /><circle cx="87.514" cy="3.006" r="2.719" /></g></g></g></g></svg>
-                        <svg viewBox="0 0 91 91" className="hidden lg:flex absolute bottom-0 right-0 -z-10 w-12 h-12 xl:w-32 xl:h-32 -mb-12 xl:-mr-12 text-indigo-500
-            fill-current"><g stroke="none" strokeWidth="1" fillRule="evenodd"><g fillRule="nonzero"><g><g><circle
-                                cx="3.261" cy="3.445" r="2.72" /><circle cx="15.296" cy="3.445" r="2.719" /><circle cx="27.333" cy="3.445"
-                                    r="2.72" /><circle cx="39.369" cy="3.445" r="2.72" /><circle cx="51.405" cy="3.445" r="2.72" /><circle cx="63.441"
-                                        cy="3.445" r="2.72" /><circle cx="75.479" cy="3.445" r="2.72" /><circle cx="87.514" cy="3.445" r="2.719" /></g><g
-                                            transform="translate(0 12)"><circle cx="3.261" cy="3.525" r="2.72" /><circle cx="15.296" cy="3.525"
-                                                r="2.719" /><circle cx="27.333" cy="3.525" r="2.72" /><circle cx="39.369" cy="3.525" r="2.72" /><circle
-                                        cx="51.405" cy="3.525" r="2.72" /><circle cx="63.441" cy="3.525" r="2.72" /><circle cx="75.479" cy="3.525"
-                                            r="2.72" /><circle cx="87.514" cy="3.525" r="2.719" /></g><g transform="translate(0 24)"><circle cx="3.261"
-                                                cy="3.605" r="2.72" /><circle cx="15.296" cy="3.605" r="2.719" /><circle cx="27.333" cy="3.605" r="2.72" /><circle
-                                        cx="39.369" cy="3.605" r="2.72" /><circle cx="51.405" cy="3.605" r="2.72" /><circle cx="63.441" cy="3.605"
-                                            r="2.72" /><circle cx="75.479" cy="3.605" r="2.72" /><circle cx="87.514" cy="3.605" r="2.719" /></g><g
-                                                transform="translate(0 36)"><circle cx="3.261" cy="3.686" r="2.72" /><circle cx="15.296" cy="3.686"
-                                                    r="2.719" /><circle cx="27.333" cy="3.686" r="2.72" /><circle cx="39.369" cy="3.686" r="2.72" /><circle
-                                        cx="51.405" cy="3.686" r="2.72" /><circle cx="63.441" cy="3.686" r="2.72" /><circle cx="75.479" cy="3.686"
-                                            r="2.72" /><circle cx="87.514" cy="3.686" r="2.719" /></g><g transform="translate(0 49)"><circle cx="3.261"
-                                                cy="2.767" r="2.72" /><circle cx="15.296" cy="2.767" r="2.719" /><circle cx="27.333" cy="2.767" r="2.72" /><circle
-                                        cx="39.369" cy="2.767" r="2.72" /><circle cx="51.405" cy="2.767" r="2.72" /><circle cx="63.441" cy="2.767"
-                                            r="2.72" /><circle cx="75.479" cy="2.767" r="2.72" /><circle cx="87.514" cy="2.767" r="2.719" /></g><g
-                                                transform="translate(0 61)"><circle cx="3.261" cy="2.846" r="2.72" /><circle cx="15.296" cy="2.846"
-                                                    r="2.719" /><circle cx="27.333" cy="2.846" r="2.72" /><circle cx="39.369" cy="2.846" r="2.72" /><circle
-                                        cx="51.405" cy="2.846" r="2.72" /><circle cx="63.441" cy="2.846" r="2.72" /><circle cx="75.479" cy="2.846"
-                                            r="2.72" /><circle cx="87.514" cy="2.846" r="2.719" /></g><g transform="translate(0 73)"><circle cx="3.261"
-                                                cy="2.926" r="2.72" /><circle cx="15.296" cy="2.926" r="2.719" /><circle cx="27.333" cy="2.926" r="2.72" /><circle
-                                        cx="39.369" cy="2.926" r="2.72" /><circle cx="51.405" cy="2.926" r="2.72" /><circle cx="63.441" cy="2.926"
-                                            r="2.72" /><circle cx="75.479" cy="2.926" r="2.72" /><circle cx="87.514" cy="2.926" r="2.719" /></g><g
-                                                transform="translate(0 85)"><circle cx="3.261" cy="3.006" r="2.72" /><circle cx="15.296" cy="3.006"
-                                                    r="2.719" /><circle cx="27.333" cy="3.006" r="2.72" /><circle cx="39.369" cy="3.006" r="2.72" /><circle
-                                        cx="51.405" cy="3.006" r="2.72" /><circle cx="63.441" cy="3.006" r="2.72" /><circle cx="75.479" cy="3.006"
-                                            r="2.72" /><circle cx="87.514" cy="3.006" r="2.719" /></g></g></g></g></svg>
-
                     </div>
                 </div>
             </div>

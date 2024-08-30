@@ -34,6 +34,16 @@ export const navLink = (
     </li>
     <li>
       <NavLink
+        to="/booking"
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "bg-blue-600 animate-bounce shadow-xl shadow-black/50 font-bold text-white" : ""
+        }
+      >
+        Booking
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
         to="/contact"
         className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "bg-blue-600 animate-bounce shadow-xl shadow-black/50 font-bold text-white" : ""
